@@ -1,61 +1,57 @@
-/**
-stack
-If we had enough space available, 
-we would be able to accommodate all the elements properly. 
-The new length would be the original length of the array plus the number of zeros. 
-Can we use this information somehow to solve the problem?
-*/
-//特殊的测试用例 [0,0,0,0,0,0,0]
 class Solution {
 public:
+    //i需要调整为守门员
     void duplicateZeros(vector<int>& arr) {
-        int left = 0, right = 0;
-        size_t  sz = arr.size();
-        //计数
-        for(int i = 0; i < sz; i++,left++)
-        {
-           if(arr[i] == 0)
-           {
-               right += 2;
-           } 
-           else
-           {
-               right += 1;
-           }
-           
-           if(right >= sz)
-                break;
-        }
+        //i,j不同的初始值后续处理不同
+        int i = 0;
+        int j = 0;
 
-//特殊的测试用例 [0,0,0,0,0,0,0]
-        if(right == sz)
+        while(j < arr.size())
         {
-            right--;
-        }
-        else
-        {
-           right -= 2;
-           arr[right] = 0;
-           right--;
-           left--;//left也要减减
-        }
-
-        for(; left >= 0; left--)
-        {
-            if(arr[left] == 0)
+            if(arr[i] == 0)
             {
-                arr[right] = 0;
-                right--;
-                arr[right] = 0;
-                right--;
+                j += 2;
             }
             else
             {
-                arr[right] = arr[left];
-                right--;
+                j += 1;
             }
+            i++;
         }
-        return;
+
+        if(i == arr.size())
+        {
+            return; 
+        }
+
+        if(j == arr.size())
+        {
+            i--;
+            j--;
+        }
+    
+        if(j == arr.size() + 1)
+        {
+            j -= 2;
+            arr[j--] = 0;
+            i -= 2;
+        }
+        
+
+        while(i >= 0)
+        {
+            if(arr[i] == 0)
+            {
+                arr[j--] = 0;
+                arr[j--] = 0;
+            }
+            else
+            {
+                arr[j--] = arr[i];
+            }
+            i--;
+        }
+
+
     }
 };
-
